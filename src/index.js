@@ -1,4 +1,6 @@
 import axios from 'axios';
+import notiflix from 'notiflix';
+import searchImages from './api-servis';
 
 const formRef = document.querySelector('#search-form');
 const inputRef = document.querySelector('.page-head__input');
@@ -7,19 +9,16 @@ const galleryRef = document.querySelector('.gallery');
 const loadMoreRef = document.querySelector('.load-more');
 
 const myKey = '24498765-29ee438a61ceedd9aaf6213cc';
-const searchName = 'dog';
 
-const BASE_URL = `https://pixabay.com/api/
-?key=${myKey}
-&q=${searchName}&
-image_type=photo&orientation=horizontal&safesearch=try&per_page=40`;
+const BASE_URL = `https://pixabay.com/api/?key=${myKey}&q=${currentName}&image_type=photo&orientation=horizontal&safesearch=true&page=${pages}&per_page=40`;
 
-const searchImages = () => {
+const searchImages = rrr => {
+  const rrr = dog;
   return fetch(`${BASE_URL}`).then(res => res.json());
 };
 
 formRef.addEventListener('submit', e => {
-  e.preventDefault();
+  e.preventDefault(searchParams);
   searchImages().then(rrr => {
     galleryRef.innerHTML = marcapGallery(rrr.hits);
   });
