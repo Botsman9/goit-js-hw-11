@@ -1,5 +1,7 @@
-import axios from 'axios';
 import Notiflix from 'notiflix';
+
+import markupGallery from './markupGallery';
+import searchImages from './api-servise';
 
 import SimpleLightbox from 'simplelightbox';
 
@@ -11,19 +13,10 @@ const formRef = document.querySelector('#search-form');
 const galleryRef = document.querySelector('.gallery');
 const loadMoreRef = document.querySelector('.load-more');
 
-// api-сервис------------------------------------------------------------------------
-const myKey = '24498765-29ee438a61ceedd9aaf6213cc';
+// переменные api-сервис------------------------------------------------------------------------
+
 let currentName = '';
 let page = 1;
-const BASE_URL = `https://pixabay.com/api/`;
-
-const searchImages = currentName => {
-  return fetch(
-    `${BASE_URL}?key=${myKey}&q=${currentName}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`,
-  )
-    .then(res => res.json())
-    .then(data => data);
-};
 
 // слушатель формы------------------------------------------------------------------
 
@@ -32,19 +25,19 @@ formRef.addEventListener('submit', e => {
   page = 1;
 
   currentName = e.currentTarget.elements.searchQuery.value;
-  searchImages(currentName).then(rrr => {
+  searchImages(currentName, page).then(data => {
     loadMoreRef.style.display = 'none';
-    galleryRef.innerHTML = marcapGallery(rrr.hits);
+    galleryRef.innerHTML = markupGallery(data.hits);
 
     page += 1;
 
-    if (rrr.total === 0) {
+    if (data.total === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.',
       );
     } else {
       return (
-        Notiflix.Notify.success(`'Hooray! We found ${rrr.totalHits} images.'`),
+        Notiflix.Notify.success(`'Hooray! We found ${data.totalHits} images.'`),
         (loadMoreRef.style.display = 'block')
       );
     }
@@ -54,45 +47,15 @@ formRef.addEventListener('submit', e => {
 // слушатель кнопки --------------------------------------------------------------------
 
 loadMoreRef.addEventListener('click', e => {
-  searchImages(currentName).then(rrr => {
+  searchImages(currentName, page).then(data => {
     page += 1;
-    galleryRef.insertAdjacentHTML('beforeend', marcapGallery(rrr.hits));
-    if (page >= Math.floor(rrr.totalHits / 40)) {
+    galleryRef.insertAdjacentHTML('beforeend', markupGallery(data.hits));
+    if (page >= Math.floor(data.totalHits / 40)) {
       Notiflix.Notify.info("We're sorry, but you've reached the end of search results."),
         (loadMoreRef.style.display = 'none');
     }
   });
 });
-
-// функция разметки карточки----------------------------------------------------------------
-function marcapGallery(arry) {
-  return arry
-    .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
-      return `<div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" width="400" height ="250" />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-      ${likes}
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-   ${views}
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-      ${comments}
-    </p>
-    <p class="info-item">
-      <b>Downloads${downloads}</b>
-      ${downloads}
-    </p>
-  </div>
-</div>
-`;
-    })
-    .join(' ');
-}
 
 // библиотека-------------------------------------------------------------------------------------
 // galleryRef.addEventListener('click', event => {
