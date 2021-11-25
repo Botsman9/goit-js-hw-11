@@ -21,7 +21,7 @@ button {
   border-color: transparent;
 }
 .page-head {
-  width: 1200;
+  max-width: 1200;
   height: 60px;
   background-color: #674785;
   padding: 0px;
