@@ -15,6 +15,11 @@ body {
 img {
   border-radius: 10px 10px 0 0;
 }
+
+button {
+  cursor: pointer;
+  border-color: transparent;
+}
 .page-head {
   width: 1200;
   height: 60px;
