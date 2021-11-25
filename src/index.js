@@ -5,15 +5,13 @@ import SimpleLightbox from 'simplelightbox';
 
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-// переменные
+// переменные------------------------------------------------------------------------
 
 const formRef = document.querySelector('#search-form');
-const inputRef = document.querySelector('.page-head__input');
-const formBtn = document.querySelector('.page-head__btn');
 const galleryRef = document.querySelector('.gallery');
 const loadMoreRef = document.querySelector('.load-more');
 
-// api-сервис
+// api-сервис------------------------------------------------------------------------
 const myKey = '24498765-29ee438a61ceedd9aaf6213cc';
 let currentName = '';
 let page = 1;
@@ -27,7 +25,7 @@ const searchImages = currentName => {
     .then(data => data);
 };
 
-// слушатель формы
+// слушатель формы------------------------------------------------------------------
 
 formRef.addEventListener('submit', e => {
   e.preventDefault();
@@ -53,7 +51,7 @@ formRef.addEventListener('submit', e => {
   });
 });
 
-// слушатель кнопки
+// слушатель кнопки --------------------------------------------------------------------
 
 loadMoreRef.addEventListener('click', e => {
   searchImages(currentName).then(rrr => {
@@ -66,7 +64,7 @@ loadMoreRef.addEventListener('click', e => {
   });
 });
 
-// функция разметки карточки
+// функция разметки карточки----------------------------------------------------------------
 function marcapGallery(arry) {
   return arry
     .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
@@ -95,3 +93,19 @@ function marcapGallery(arry) {
     })
     .join(' ');
 }
+
+// библиотека-------------------------------------------------------------------------------------
+// galleryRef.addEventListener('click', event => {
+//   event.preventDefault();
+//   if (event.target.tagName !== 'IMG') return;
+
+//   const origImg = event.target;
+
+//   const lightbox = new SimpleLightbox('.gallery div', {
+//     captionsData: 'alt',
+//     captionDelay: 250,
+//     captionPosition: '',
+//   });
+
+//   lightbox.show();
+// });
