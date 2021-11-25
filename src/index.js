@@ -5,12 +5,15 @@ import SimpleLightbox from 'simplelightbox';
 
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
+// переменные
+
 const formRef = document.querySelector('#search-form');
 const inputRef = document.querySelector('.page-head__input');
 const formBtn = document.querySelector('.page-head__btn');
 const galleryRef = document.querySelector('.gallery');
 const loadMoreRef = document.querySelector('.load-more');
 
+// api-сервис
 const myKey = '24498765-29ee438a61ceedd9aaf6213cc';
 let currentName = '';
 let page = 1;
@@ -24,6 +27,8 @@ const searchImages = currentName => {
     .then(data => data);
 };
 
+// слушатель формы
+
 formRef.addEventListener('submit', e => {
   e.preventDefault();
   page = 1;
@@ -32,6 +37,9 @@ formRef.addEventListener('submit', e => {
   searchImages(currentName).then(rrr => {
     loadMoreRef.style.display = 'none';
     galleryRef.innerHTML = marcapGallery(rrr.hits);
+
+    page += 1;
+
     if (rrr.total === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.',
@@ -42,43 +50,44 @@ formRef.addEventListener('submit', e => {
         (loadMoreRef.style.display = 'block')
       );
     }
-
-    console.log(rrr);
-    page += 1;
   });
 });
+
+// слушатель кнопки
 
 loadMoreRef.addEventListener('click', e => {
   searchImages(currentName).then(rrr => {
-    if (page <= Math.floor(rrr.totalHits % 40)) {
-      return (
-        Notiflix.Notify.info("We're sorry, but you've reached the end of search results."),
-        (loadMoreRef.style.display = 'none')
-      );
-    }
     page += 1;
-    console.log(page);
     galleryRef.insertAdjacentHTML('beforeend', marcapGallery(rrr.hits));
+    if (page >= Math.floor(rrr.totalHits / 40)) {
+      Notiflix.Notify.info("We're sorry, but you've reached the end of search results."),
+        (loadMoreRef.style.display = 'none');
+    }
   });
 });
 
+// функция разметки карточки
 function marcapGallery(arry) {
   return arry
     .map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
       return `<div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+  <img src="${webformatURL}" alt="${tags}" loading="lazy" width="400" height ="250" />
   <div class="info">
     <p class="info-item">
-      <b>Likes${likes}</b>
+      <b>Likes</b>
+      ${likes}
     </p>
     <p class="info-item">
-      <b>Views${views}</b>
+      <b>Views</b>
+   ${views}
     </p>
     <p class="info-item">
-      <b>Comments${comments}</b>
+      <b>Comments</b>
+      ${comments}
     </p>
     <p class="info-item">
       <b>Downloads${downloads}</b>
+      ${downloads}
     </p>
   </div>
 </div>

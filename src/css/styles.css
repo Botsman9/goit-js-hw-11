@@ -41,9 +41,11 @@ body {
 }
 
 .gallery {
+  padding-top: 60px;
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  /* align-items: center; */
+  justify-content: center;
 }
 
 .page-footer {
@@ -61,4 +63,22 @@ body {
   border-color: black;
   background-color: rgb(218, 145, 122);
   border-radius: 10px;
+}
+
+/* стили карточки */
+
+.photo-card {
+  margin: 15px;
+}
+.info {
+  display: flex;
+  justify-content: space-around;
+}
+.info-item {
+  font-weight: 600;
+  text-align: center;
+}
+.info-item > b {
+  display: block;
+  flex-wrap: wrap;
 }
