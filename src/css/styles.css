@@ -40,12 +40,19 @@ body {
   border-radius: 10px;
 }
 
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
 .page-footer {
   display: flex;
   justify-content: center;
 }
 
 .load-more {
+  display: none;
   padding: 0;
   font-size: 25px;
   font-weight: 500;
